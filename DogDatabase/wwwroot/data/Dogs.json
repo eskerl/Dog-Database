@@ -1,0 +1,35 @@
+﻿{
+  {
+    "id": 0,
+    "name": "Treasure",
+    "breed": "Havanese",
+    "birthday": "04/22/2010",
+    "age": 11,
+    "weight": 10
+  },
+  {
+    "id": 1,
+    "name": "Teegan",
+    "breed": "Shih Tzu",
+    "birthday": "01/01/2015",
+    "age": 6,
+    "weight": 14
+  },
+  {
+    "id": 2,
+    "name": "Declan",
+    "breed": "Golden Retriever",
+    "birthday": "03/25/2008",
+    "age": 13,
+    "weight": 80
+  },
+  {
+    "id": 3,
+    "name": "Cloe",
+    "breed": "Chihuahua-Toy Poodle Mix",
+    "birthday": "06/04/2009",
+    "age": 11,
+    "weight": 7
+  }
+
+}
