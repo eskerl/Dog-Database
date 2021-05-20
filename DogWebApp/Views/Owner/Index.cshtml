@@ -1,0 +1,29 @@
+﻿@model IEnumerable<DogWebApp.Models.Owner>
+@{
+    ViewData["Title"] = "Owner Main Page";
+}
+
+<h2>Registered Owners</h2>
+@if (!Model.Any())
+{
+    <p>No owners registered.</p>
+}
+else
+{
+    <table class=“table table-bordered table-hover”>
+        <thead>
+            <tr>
+                <th>Name</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var owner in Model)
+            {
+                <tr>
+                    <td>@owner.FirstName @owner.LastName</td>
+                </tr>
+            }
+        </tbody>
+
+    </table>
+}

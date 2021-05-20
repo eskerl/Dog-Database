@@ -1,0 +1,29 @@
+﻿@model IEnumerable<DogWebApp.Models.Dog>
+@{
+    ViewData["Title"] = "Dog Main Page";
+}
+
+<h2>Registered Dogs</h2>
+@if (!Model.Any())
+{
+    <p>No dogs registered.</p>
+}
+else
+{
+    <table class=“table table-bordered table-hover”>
+        <thead>
+            <tr>
+                <th>Name</th>
+            </tr>
+        </thead>
+        <tbody>
+           @foreach (var dog in Model)
+           {
+                <tr>
+                    <td>@Html.ActionLink(dog.Name,"Info", "Dog", new { id = dog.Id }, null)</td>
+                </tr>
+           }
+        </tbody>
+        
+    </table>
+}
