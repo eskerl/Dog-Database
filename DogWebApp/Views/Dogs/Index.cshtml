@@ -4,7 +4,7 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+<h1>Registered Dogs</h1>
 
 <p>
     <a asp-action="Create">Create New</a>
@@ -40,10 +40,7 @@
                 @Html.DisplayFor(modelItem => item.Breed)
             </td>
             <td>
-                @if (item.Birthday.HasValue)
-                {
-                    @item.Birthday.Value.ToShortDateString()
-                }
+                @Html.DisplayFor(modelItem => item.Birthday)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Age)
