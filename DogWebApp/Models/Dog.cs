@@ -14,10 +14,9 @@ namespace DogWebApp.Models
 
         public string Breed { get; set; }
 
-        [DisplayFormat(DataFormatString = "{0:d MMM yyyy}")]
+        [DataType(DataType.Date)]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:MM/dd/yyyy}")]
         public DateTime? Birthday { get; set; }
-
-
         [Range(0, 30)]
         public short? Age { get; set; }
 

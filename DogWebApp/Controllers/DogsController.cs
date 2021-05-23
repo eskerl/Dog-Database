@@ -65,7 +65,7 @@ namespace DogWebApp.Controllers
             return View(dog);
         }
 
-        // GET: Dogs/Edit/5
+        // GET: Dogs/Edit/{id}
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -81,7 +81,7 @@ namespace DogWebApp.Controllers
             return View(dog);
         }
 
-        // POST: Dogs/Edit/5
+        // POST: Dogs/Edit/{id}
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
@@ -116,7 +116,7 @@ namespace DogWebApp.Controllers
             return View(dog);
         }
 
-        // GET: Dogs/Delete/5
+        // GET: Dogs/Delete/{id}
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -134,7 +134,7 @@ namespace DogWebApp.Controllers
             return View(dog);
         }
 
-        // POST: Dogs/Delete/5
+        // POST: Dogs/Delete/{id}
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
@@ -149,5 +149,6 @@ namespace DogWebApp.Controllers
         {
             return _context.Dog.Any(e => e.Id == id);
         }
+
     }
 }
