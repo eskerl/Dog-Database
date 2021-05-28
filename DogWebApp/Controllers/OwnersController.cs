@@ -31,27 +31,13 @@ namespace DogWebApp.Controllers
             _context = context;
         }
 
-        /// <summary>
-        ///     GET request for all Owners in database
-        /// </summary>
-        /// <returns>
-        ///     a View with all of the stored owner details
-        /// </returns>
+        // GET: Owners
         public async Task<IActionResult> Index()
         {
             return View(await _context.Owners.ToListAsync());
         }
 
-        /// <summary>
-        ///     GET request for a sepcified owner with the corresponding ID
-        /// </summary>
-        /// <param name="id">
-        ///     ID of the desired owner
-        /// </param>
-        /// <returns>
-        ///     View with the specified owner's details
-        ///     or HTTP not found if owner does not exist or ID is not null
-        /// </returns>
+        // GET: Owners/Details/{id}
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -69,26 +55,13 @@ namespace DogWebApp.Controllers
             return View(owner);
         }
 
-        /// <summary>
-        ///     GET request for the form page to create a new owner
-        /// </summary>
-        /// <returns>
-        ///     a View with a form to create a new owner
-        /// </returns>
+        // GET: Owners/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        /// <summary>
-        ///     POST request with details of new owner
-        /// </summary
-        /// <param name="owner">
-        ///     A owner object with the new owner's values binded to the fields
-        /// </param>
-        /// <returns>
-        ///     a View - Index if create was successful, same view if fails
-        /// </returns>
+        // POST: Owners/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,FirstName,LastName,Address,PhoneNumber")] Owner owner)
@@ -102,16 +75,7 @@ namespace DogWebApp.Controllers
             return View(owner);
         }
 
-        /// <summary>
-        ///     GET request for owner with corresponding ID
-        /// </summary>
-        /// <param name="id">
-        ///     ID of the owner we wish to edit
-        /// </param>
-        /// <returns>
-        ///     A view with a form to edit the owner's details
-        ///     or HTTP not found if id is null or owner could not be found
-        /// </returns>
+        // GET: Owners/Edit/{id}
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -127,16 +91,7 @@ namespace DogWebApp.Controllers
             return View(owner);
         }
 
-        /// <summary>
-        ///     POST request to update a owner with corresponding ID
-        /// </summary>
-        /// <param name="id">
-        ///     ID of the owner we wish to edit
-        /// </param>
-        /// <returns>
-        ///     A view - Index if successful, same view is not
-        ///     or HTTP not found if id is null or owner could not be found
-        /// </returns>
+        // POST: Owners/Edit/{id}
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,FirstName,LastName,Address,PhoneNumber")] Owner owner)
@@ -169,16 +124,7 @@ namespace DogWebApp.Controllers
             return View(owner);
         }
 
-        /// <summary>
-        ///     GET request to delete a owner
-        /// </summary>
-        /// <param name="id">
-        ///     ID of the owner we wish to delete
-        /// </param>
-        /// <returns>
-        ///     A view to confirm deletion
-        ///     or HTTP not found if id is null or owner could not be found
-        /// </returns>
+        // GET: Owners/Delete/{id}
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -196,15 +142,7 @@ namespace DogWebApp.Controllers
             return View(owner);
         }
 
-        /// <summary>
-        ///     Deletes a owner with corresponding ID
-        /// </summary>
-        /// <param name="id">
-        ///     ID of the owner we wish to edit
-        /// </param>
-        /// <returns>
-        ///     Index view
-        /// </returns>
+        // POST: Owners/Delete/{id}
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)

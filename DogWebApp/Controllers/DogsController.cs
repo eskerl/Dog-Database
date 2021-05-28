@@ -31,27 +31,13 @@ namespace DogWebApp.Controllers
             _context = context;
         }
 
-        /// <summary>
-        ///     GET request for all Dogs in database
-        /// </summary>
-        /// <returns>
-        ///     a View with all of the stored dog details
-        /// </returns>
+        // GET: Dogs
         public async Task<IActionResult> Index()
         {
             return View(await _context.Dog.ToListAsync());
         }
 
-        /// <summary>
-        ///     GET request for a sepcified dog with the corresponding ID
-        /// </summary>
-        /// <param name="id">
-        ///     ID of the desired dog
-        /// </param>
-        /// <returns>
-        ///     View with the specified dog's details
-        ///     or HTTP not found if dog does not exist or ID is not null
-        /// </returns>
+        // GET: Dogs/Details/{id}
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -69,26 +55,13 @@ namespace DogWebApp.Controllers
             return View(dog);
         }
 
-        /// <summary>
-        ///     GET request for the form page to create a new dog
-        /// </summary>
-        /// <returns>
-        ///     a View with a form to create a new dog
-        /// </returns>
+        // GET: Dogs/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        /// <summary>
-        ///     POST request with details of new dog
-        /// </summary
-        /// <param name="dog">
-        ///     A Dog object with the new dog's values binded to the fields
-        /// </param>
-        /// <returns>
-        ///     a View - Index if create was successful, same view if fails
-        /// </returns>
+        // POST: Dogs/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Name,Breed,Birthday,Age,Weight")] Dog dog)
@@ -102,16 +75,7 @@ namespace DogWebApp.Controllers
             return View(dog);
         }
 
-        /// <summary>
-        ///     GET request for dog with corresponding ID
-        /// </summary>
-        /// <param name="id">
-        ///     ID of the dog we wish to edit
-        /// </param>
-        /// <returns>
-        ///     A view with a form to edit the dog's details
-        ///     or HTTP not found if id is null or dog could not be found
-        /// </returns>
+        // GET: Dogs/Edit/{id}
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -127,16 +91,7 @@ namespace DogWebApp.Controllers
             return View(dog);
         }
 
-        /// <summary>
-        ///     POST request to update a dog with corresponding ID
-        /// </summary>
-        /// <param name="id">
-        ///     ID of the dog we wish to edit
-        /// </param>
-        /// <returns>
-        ///     A view - Index if successful, same view is not
-        ///     or HTTP not found if id is null or dog could not be found
-        /// </returns>
+        // POST: Dogs/Edit/{id}
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Breed,Birthday,Age,Weight")] Dog dog)
@@ -169,16 +124,7 @@ namespace DogWebApp.Controllers
             return View(dog);
         }
 
-        /// <summary>
-        ///     GET request to delete a dog
-        /// </summary>
-        /// <param name="id">
-        ///     ID of the dog we wish to delete
-        /// </param>
-        /// <returns>
-        ///     A view to confirm deletion
-        ///     or HTTP not found if id is null or dog could not be found
-        /// </returns>
+        // GET: Dogs/Delete/{id}
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -196,15 +142,7 @@ namespace DogWebApp.Controllers
             return View(dog);
         }
 
-        /// <summary>
-        ///     Deletes a dog with corresponding ID
-        /// </summary>
-        /// <param name="id">
-        ///     ID of the dog we wish to edit
-        /// </param>
-        /// <returns>
-        ///     Index view
-        /// </returns>
+        // POST: Dogs/Delete/{id}
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
