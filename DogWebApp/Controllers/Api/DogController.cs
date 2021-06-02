@@ -1,4 +1,6 @@
-﻿using DogWebApp.Data;
+﻿using AutoMapper;
+using DogWebApp.Data;
+using DogWebApp.Dtos;
 using DogWebApp.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -15,6 +17,8 @@ namespace DogWebApp.Controllers
     {
         //the context for the database
         private readonly DogContext _context;
+        //the auto mapper context
+        private readonly IMapper _mapper;
 
         /// <summary>
         ///     Constructs this controller for Dogs
@@ -29,14 +33,14 @@ namespace DogWebApp.Controllers
 
         // GET: Api/Dog
         [HttpGet]
-        public IEnumerable<Dog> GetDogs()
+        public IEnumerable<DogDto> GetDogs()
         {
-            return _context.Dog.ToList();
+            return _context.Dog.ToList().Select(_mapper.Map<Dog, DogDto>);
         }
 
         // GET: Api/Dog/{id}
         [HttpGet("{id}")]
-        public Dog GetDog(int id)
+        public DogDto GetDog(int id)
         {
             var dog = _context.Dog.SingleOrDefault(d => d.Id == id);
 
@@ -45,22 +49,25 @@ namespace DogWebApp.Controllers
                 NotFound();
             }
 
-            return dog;
+            return _mapper.Map<Dog, DogDto>(dog);
         }
 
         // POST: Api/Dog
         [HttpPost]
-        public Dog CreateDog(Dog dog)
+        public DogDto CreateDog(DogDto dogDto)
         {
+            Dog dog = _mapper.Map<DogDto, Dog>(dogDto);
             _context.Dog.Add(dog);
             _context.SaveChanges();
 
-            return dog;
+            dogDto.Id = dog.Id;
+
+            return dogDto;
         }
 
         // PUT: Api/Dog/{id}
         [HttpPut("{id}")]
-        public void UpdateDog(int id, Dog dog)
+        public void UpdateDog(int id, DogDto dogDto)
         {
             var dogInDb = _context.Dog.SingleOrDefault(d => d.Id == id);
 
@@ -69,12 +76,7 @@ namespace DogWebApp.Controllers
                 NotFound();
             }
 
-            dogInDb.Name = dog.Name;
-            dogInDb.Birthday = dog.Birthday;
-            dogInDb.Breed = dog.Breed;
-            dogInDb.Age = dog.Age;
-            dogInDb.Weight = dog.Weight;
-
+            _mapper.Map(dogDto, dogInDb);
             _context.SaveChanges();
         }
 

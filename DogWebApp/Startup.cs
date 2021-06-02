@@ -10,6 +10,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using DogWebApp.Data;
 using Microsoft.EntityFrameworkCore;
+using AutoMapper;
+using IConfiguration = Microsoft.Extensions.Configuration.IConfiguration;
 
 namespace DogWebApp
 {
@@ -60,6 +62,11 @@ namespace DogWebApp
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
             });
+
+            var config = new MapperConfiguration(cfg => {
+                cfg.AddProfile<MappingProfile>();
+            });
+            var mapper = config.CreateMapper();
         }
     }
 }
