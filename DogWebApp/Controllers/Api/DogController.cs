@@ -26,9 +26,10 @@ namespace DogWebApp.Controllers
         /// <param name="context">
         ///     the database context
         /// </param>
-        public DogController(DogContext context)
+        public DogController(DogContext context, IMapper mapper)
         {
             _context = context;
+            _mapper = mapper;
         }
 
         // GET: Api/Dog

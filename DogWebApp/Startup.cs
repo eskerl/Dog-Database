@@ -11,6 +11,7 @@ using Microsoft.Extensions.Hosting;
 using DogWebApp.Data;
 using Microsoft.EntityFrameworkCore;
 using AutoMapper;
+using Newtonsoft.Json.Serialization;
 using IConfiguration = Microsoft.Extensions.Configuration.IConfiguration;
 
 namespace DogWebApp
@@ -34,6 +35,13 @@ namespace DogWebApp
 
             services.AddDbContext<OwnerContext>(options =>
             options.UseSqlServer(Configuration.GetConnectionString("OwnerContext")));
+
+            var config = new MapperConfiguration(cfg => {
+                cfg.AddProfile<MappingProfile>();
+            });
+            var mapper = config.CreateMapper();
+
+            services.AddSingleton(mapper);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -62,11 +70,6 @@ namespace DogWebApp
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
             });
-
-            var config = new MapperConfiguration(cfg => {
-                cfg.AddProfile<MappingProfile>();
-            });
-            var mapper = config.CreateMapper();
         }
     }
 }
