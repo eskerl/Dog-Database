@@ -4,12 +4,13 @@ using DogWebApp.Dtos;
 using DogWebApp.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace DogWebApp.Controllers
+namespace DogWebApp.Controllers.Api
 {
     [Route("api/[controller]")]
     [ApiController]
@@ -34,20 +35,20 @@ namespace DogWebApp.Controllers
 
         // GET: Api/Dog
         [HttpGet]
-        public IEnumerable<DogDto> GetDogs()
+        public async Task<ActionResult<IEnumerable<Dog>>> GetDogs()
         {
-            return _context.Dog.ToList().Select(_mapper.Map<Dog, DogDto>);
+            return await _context.Dog.ToListAsync();
         }
 
         // GET: Api/Dog/{id}
         [HttpGet("{id}")]
-        public DogDto GetDog(int id)
+        public async Task<ActionResult<DogDto>> GetDog(int id)
         {
-            var dog = _context.Dog.SingleOrDefault(d => d.Id == id);
+            var dog = await _context.Dog.FindAsync(id);
 
             if (dog == null)
             {
-                NotFound();
+                return NotFound();
             }
 
             return _mapper.Map<Dog, DogDto>(dog);
@@ -55,45 +56,62 @@ namespace DogWebApp.Controllers
 
         // POST: Api/Dog
         [HttpPost]
-        public DogDto CreateDog(DogDto dogDto)
+        public async Task<ActionResult<DogDto>> CreateDog(DogDto dogDto)
         {
             Dog dog = _mapper.Map<DogDto, Dog>(dogDto);
             _context.Dog.Add(dog);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
 
             dogDto.Id = dog.Id;
 
-            return dogDto;
+            return CreatedAtAction(nameof(GetDog), new { id = dogDto.Id }, dogDto);
         }
 
         // PUT: Api/Dog/{id}
         [HttpPut("{id}")]
-        public void UpdateDog(int id, DogDto dogDto)
+        public async Task<IActionResult> UpdateDog(int id, DogDto dogDto)
         {
-            var dogInDb = _context.Dog.SingleOrDefault(d => d.Id == id);
+            if (id != dogDto.Id)
+            {
+                return BadRequest();
+            }
 
+            var dogInDb = _context.Dog.SingleOrDefault(d => d.Id == id);
             if (dogInDb == null)
             {
-                NotFound();
+                return NotFound();
             }
 
             _mapper.Map(dogDto, dogInDb);
-            _context.SaveChanges();
+            _context.Entry(dogInDb).State = EntityState.Modified;
+
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                throw;
+            }
+
+            return NoContent();
         }
 
         // DELETE: Api/Dog/{id}
         [HttpDelete("{id}")]
-        public void DeleteDog(int id)
+        public async Task<ActionResult<Dog>> DeleteDog(int id)
         {
             var dogInDb = _context.Dog.SingleOrDefault(d => d.Id == id);
 
             if (dogInDb == null)
             {
-                NotFound();
+                return NotFound();
             }
 
             _context.Dog.Remove(dogInDb);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
+
+            return dogInDb;
         }
     }
 }
