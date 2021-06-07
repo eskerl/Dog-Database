@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using AutoMapper.QueryableExtensions;
 using DogWebApp.Data;
 using DogWebApp.Dtos;
 using DogWebApp.Models;
@@ -35,9 +36,11 @@ namespace DogWebApp.Controllers.Api
 
         // GET: Api/Dog
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Dog>>> GetDogs()
+        public async Task<ActionResult<IEnumerable<DogDto>>> GetDogs()
         {
-            return await _context.Dog.ToListAsync();
+            return await _context.Dog
+                                 .Select(x => _mapper.Map<Dog, DogDto>(x))
+                                 .ToListAsync();
         }
 
         // GET: Api/Dog/{id}
@@ -76,23 +79,17 @@ namespace DogWebApp.Controllers.Api
                 return BadRequest();
             }
 
-            var dogInDb = _context.Dog.SingleOrDefault(d => d.Id == id);
+            var dogInDb = _context.Dog.FindAsync(id);
             if (dogInDb == null)
             {
                 return NotFound();
             }
 
-            _mapper.Map(dogDto, dogInDb);
+            await _mapper.Map(dogDto, dogInDb);
             _context.Entry(dogInDb).State = EntityState.Modified;
 
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                throw;
-            }
+
+            await _context.SaveChangesAsync();
 
             return NoContent();
         }
@@ -101,7 +98,7 @@ namespace DogWebApp.Controllers.Api
         [HttpDelete("{id}")]
         public async Task<ActionResult<Dog>> DeleteDog(int id)
         {
-            var dogInDb = _context.Dog.SingleOrDefault(d => d.Id == id);
+            var dogInDb = await _context.Dog.FindAsync(id);
 
             if (dogInDb == null)
             {
@@ -111,7 +108,7 @@ namespace DogWebApp.Controllers.Api
             _context.Dog.Remove(dogInDb);
             await _context.SaveChangesAsync();
 
-            return dogInDb;
+            return NoContent();
         }
     }
 }
